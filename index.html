@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Sitio Web</title>
+    <style>
+        /* Reset & Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Alegreya, sans-serif;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #333;
+            padding: 15px 20px;
+            color: white;
+            position: sticky;
+            top: 0;
+            width: 100%;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: #f4f4f4;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .services {
+            text-align: center;
+            padding: 50px 20px;
+            background: #fff;
+        }
+
+        .service-box {
+            display: inline-block;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            width: 250px;
+        }
+
+        .contact {
+            text-align: center;
+            padding: 50px 20px;
+            background: #333;
+            color: white;
+        }
+
+        .contact form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .contact input, .contact textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .contact button {
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <h1 class="logo">Mi Sitio Web</h1>
+        <ul class="nav-links">
+            <li><a href="#home">Inicio</a></li>
+            <li><a href="#services">Servicios</a></li>
+            <li><a href="#contact">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <h1>Bienvenido a Mi Sitio Web</h1>
+        <p>Ofrecemos servicios increíbles para hacer tu vida más fácil.</p>
+        <a href="#services" class="btn">Explorar Servicios</a>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <h2>Nuestros Servicios</h2>
+        <div class="service-box">
+            <h3>Diseño Web</h3>
+            <p>Diseños hermosos y responsivos.</p>
+        </div>
+        <div class="service-box">
+            <h3>SEO</h3>
+            <p>Mejoramos el posicionamiento de tu web.</p>
+        </div>
+        <div class="service-box">
+            <h3>Marketing</h3>
+            <p>Alcance preciso de tu audiencia.</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2>Contáctanos</h2>
+        <form>
+            <input type="text" placeholder="Tu Nombre" required>
+            <input type="email" placeholder="Tu Correo" required>
+            <textarea placeholder="Tu Mensaje" required></textarea>
+            <button type="submit">Enviar Mensaje</button>
+        </form>
+    </section>
+
+    <script>
+        // Smooth Scroll Effect
+        document.querySelectorAll('.nav-links a').forEach(anchor => {
+            anchor.addEventListener('click', function(event) {
+                event.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Form Submission Alert
+        document.querySelector("form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("¡Gracias! Tu mensaje ha sido enviado.");
+        });
+    </script>
+
+</body>
+</html>

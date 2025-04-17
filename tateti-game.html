@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TA TE TI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@900&family=Labrada&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Labrada', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        
+        h1 {
+            font-family: 'Alegreya', serif;
+            font-weight: 900;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .status {
+            margin: 20px 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+        
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            background-color: #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .cell:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .x {
+            color: #e74c3c;
+        }
+        
+        .o {
+            color: #3498db;
+        }
+        
+        .controls {
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: 'Labrada', serif;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .scoreboard {
+            display: flex;
+            justify-content: space-around;
+            width: 300px;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .score {
+            text-align: center;
+        }
+        
+        .score h3 {
+            margin: 0;
+            color: #333;
+            font-family: 'Alegreya', serif;
+            font-weight: 900;
+        }
+        
+        .score p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        
+        .player-x {
+            color: #e74c3c;
+        }
+        
+        .player-o {
+            color: #3498db;
+        }
+        
+        .winning-cell {
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Canvas para el confeti */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Confeti alternativo (CSS puro) */
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffd300;
+            top: -10px;
+            opacity: 0;
+            animation: makeItRain 1.5s linear infinite;
+        }
+
+        @keyframes makeItRain {
+            from {
+                opacity: 0;
+                transform: translateY(0%) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+                transform: translateY(1000%) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+    <div id="confetti-container"></div>
+    <div class="game-container">
+        <h1>TA TE TI</h1>
+        
+        <div class="status" id="status">Jugador X, es tu turno</div>
+        
+        <div class="board" id="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        
+        <div class="controls">
+            <button id="restart">Reiniciar Juego</button>
+        </div>
+        
+        <div class="scoreboard">
+            <div class="score">
+                <h3 class="player-x">Jugador X</h3>
+                <p id="score-x">0</p>
+            </div>
+            <div class="score">
+                <h3>Empates</h3>
+                <p id="score-tie">0</p>
+            </div>
+            <div class="score">
+                <h3 class="player-o">Jugador O</h3>
+                <p id="score-o">0</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const board = document.getElementById('board');
+            const cells = document.querySelectorAll('.cell');
+            const status = document.getElementById('status');
+            const restartButton = document.getElementById('restart');
+            const scoreX = document.getElementById('score-x');
+            const scoreO = document.getElementById('score-o');
+            const scoreTie = document.getElementById('score-tie');
+            const confettiContainer = document.getElementById('confetti-container');
+            
+            let currentPlayer = 'X';
+            let gameState = ['', '', '', '', '', '', '', '', ''];
+            let gameActive = true;
+            let scores = {
+                X: 0,
+                O: 0,
+                tie: 0
+            };
+            
+            // Función para crear confeti de CSS puro (solución alternativa a ConfettiGenerator)
+            function createConfetti() {
+                const confettiCount = 100;
+                const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+                
+                confettiContainer.innerHTML = '';
+                
+                for (let i = 0; i < confettiCount; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti-piece';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+                    
+                    confettiContainer.appendChild(confetti);
+                }
+                
+                // Limpiar el confeti después de 5 segundos
+                setTimeout(() => {
+                    confettiContainer.innerHTML = '';
+                }, 5000);
+            }
+            
+            const winningConditions = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],  // filas
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],  // columnas
+                [0, 4, 8], [2, 4, 6]              // diagonales
+            ];
+            
+            function handleCellClick(e) {
+                const clickedCell = e.target;
+                const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+                
+                if (gameState[clickedCellIndex] !== '' || !gameActive) {
+                    return;
+                }
+                
+                gameState[clickedCellIndex] = currentPlayer;
+                clickedCell.textContent = currentPlayer;
+                clickedCell.classList.add(currentPlayer.toLowerCase());
+                
+                checkResult();
+            }
+            
+            function checkResult() {
+                let roundWon = false;
+                let winningLine = null;
+                
+                for (let i = 0; i < winningConditions.length; i++) {
+                    const [a, b, c] = winningConditions[i];
+                    
+                    if (gameState[a] === '' || gameState[b] === '' || gameState[c] === '') {
+                        continue;
+                    }
+                    
+                    if (gameState[a] === gameState[b] && gameState[b] === gameState[c]) {
+                        roundWon = true;
+                        winningLine = [a, b, c];
+                        break;
+                    }
+                }
+                
+                if (roundWon) {
+                    status.textContent = `¡Jugador ${currentPlayer} ha ganado!`;
+                    gameActive = false;
+                    scores[currentPlayer]++;
+                    updateScoreboard();
+                    
+                    // Destacar la línea ganadora
+                    if (winningLine) {
+                        winningLine.forEach(index => {
+                            cells[index].classList.add('winning-cell');
+                        });
+                    }
+                    
+                    // Activar el efecto de confeti
+                    createConfetti();
+                    
+                    return;
+                }
+                
+                const roundDraw = !gameState.includes('');
+                if (roundDraw) {
+                    status.textContent = '¡Empate!';
+                    gameActive = false;
+                    scores.tie++;
+                    updateScoreboard();
+                    return;
+                }
+                
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                status.textContent = `Jugador ${currentPlayer}, es tu turno`;
+            }
+            
+            function updateScoreboard() {
+                scoreX.textContent = scores.X;
+                scoreO.textContent = scores.O;
+                scoreTie.textContent = scores.tie;
+            }
+            
+            function restartGame() {
+                currentPlayer = 'X';
+                gameState = ['', '', '', '', '', '', '', '', ''];
+                gameActive = true;
+                status.textContent = `Jugador ${currentPlayer}, es tu turno`;
+                
+                // Limpiar el confeti
+                confettiContainer.innerHTML = '';
+                
+                cells.forEach(cell => {
+                    cell.textContent = '';
+                    cell.classList.remove('x');
+                    cell.classList.remove('o');
+                    cell.classList.remove('winning-cell');
+                });
+            }
+            
+            // Event listeners
+            cells.forEach(cell => {
+                cell.addEventListener('click', handleCellClick);
+            });
+            
+            restartButton.addEventListener('click', restartGame);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Peso en otro planeta </title>
+</head>
+<style>
+	body
+	{
+	text-align: center;
+	background-image: url("https://static.vecteezy.com/ti/vetor-gratis/p1/2035221-paisagem-superficie-de-ficcao-cientifica-fantasia-planeta-ilustracao-vetor.jpg");
+	color: rgba(255, 255, 255, 255.100);
+      font-family: Verdana;
+      }
+
+  h1 {
+    font-family: Georgia;
+    text-align: center;
+    color: rgba(255, 255, 255, 255.100);
+  }
+    p {
+      font-family: Verdana;
+      text-align: center;
+      color: rgb(255, 255, 255, 255.100);
+      }	
+	}
+</style>
+<body> <table border = "1" width = "100%">
+         
+         <tr>
+            <td>
+	<h1> ¿Cuánto pesarías en otro planeta? </h1>
+	<p> Este algoritmo te permite calcular tu peso exacto en otro planeta. Digita 1 para Marte o 2 para Júpiter.</p>      
+	<p> <h4> Introduce tu peso </p> <input type = "text" id = "BoxText1">	 </h4>
+	<p> <h4> Selecciona tu planeta </p> <input type = "text" id = "BoxText2"> </h4>	
+	<p> <input type = "button" value = "Oprime aquí" id = "Buttonclick"> </p>	
+	<p> A continuación verás tu peso en el planeta seleccionado </p>	
+<script>	
+	function Calculator()
+	{
+	var User = parseInt(BoxText1.value);
+	var Planet = parseInt(BoxText2.value);
+	User = parseFloat(User);
+	var Gravedadtierra=9.8;
+	var Gravedadmarte=3.7;
+	var Gravedadvenus=8.87;
+	var Gravedadsaturno=10.44;
+	var Gravedadjupiter=24.8;
+	var Gravedadurano=8.7;
+	var Gravedadneptuno=11.15;
+	var Gravedadpluton=0.62;
+	var PesoFinal;
+	if (Planet == 1)
+	{
+	PesoFinal = User*Gravedadmarte/Gravedadtierra;
+	PesoFinal = parseFloat(PesoFinal).toFixed(1);
+	var Message = alert("Tu peso en Marte es: "+PesoFinal+" kg.");
+	}
+	else if (Planet == 2)
+	{
+	PesoFinal = User*Gravedadjupiter/Gravedadtierra;
+	PesoFinal = parseFloat(PesoFinal).toFixed(1);
+	var Message = alert("Tu peso en Júpiter es: "+PesoFinal+" kg.");
+	}
+	else if (Planet == 3)
+	{
+	PesoFinal = User*Gravedadurano/Gravedadtierra;
+	PesoFinal = parseFloat(PesoFinal).toFixed(1);
+	var Message = alert("Tu peso en Urano es: "+PesoFinal+" kg.");
+	}
+	else if (Planet == 4)
+	{
+	PesoFinal = User*Gravedadvenus/Gravedadtierra;
+	PesoFinal = parseFloat(PesoFinal).toFixed(1);
+	var Message = alert("Tu peso en Venus es: "+PesoFinal+" kg.");
+	}
+	else if (Planet == 5)
+	{
+	PesoFinal = User*Gravedadsaturno/Gravedadtierra;
+	PesoFinal = parseFloat(PesoFinal).toFixed(1);
+	var Message = alert("Tu peso en Saturno es: "+PesoFinal+" kg.");
+	}
+	else if (Planet == 6)
+	{
+	PesoFinal = User*Gravedadneptuno/Gravedadtierra;
+	PesoFinal = parseFloat(PesoFinal).toFixed(1);
+	var Message = alert("Tu peso en Neptuno es: "+PesoFinal+" kg.");
+	}
+	else if (Planet == 7)
+	{
+	PesoFinal = User*Gravedadpluton/Gravedadtierra;
+	PesoFinal = parseFloat(PesoFinal).toFixed(1);
+	var Message = alert("Tu peso en Plúton es: "+PesoFinal+" kg.");
+	}
+	else
+	{
+	alert("¡Error!\nseleccione un plantea válido.");
+	}
+	}
+	Buttonclick.addEventListener("click", Calculator);
+	</script>
+	
+      </table>
+<table border="1" width="100%">
+        <tr>
+         <td>
+    <marquee width="100%">Autor de la página: Jesús David Silva Rangel.</marquee>
+</table> 
+  
+</body>
+</html>

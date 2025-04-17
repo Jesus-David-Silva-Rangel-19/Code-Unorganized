@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System Animation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@900&family=Labrada&display=swap');
+
+        body {
+            background: radial-gradient(circle, #000000, #1a1a2e);
+            color: white;
+            font-family: 'Labrada', serif;
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-family: 'Alegreya', serif;
+            font-size: 2.5rem;
+            margin-top: 20px;
+        }
+
+        .solar-system {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sun {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, yellow, orange, red);
+            border-radius: 50%;
+            position: absolute;
+            box-shadow: 0 0 50px yellow;
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .planet-label {
+            position: absolute;
+            font-size: 14px;
+            color: white;
+            font-family: 'Alegreya', serif;
+            text-shadow: 1px 1px 3px black;
+            white-space: nowrap;
+            top: calc(100% + 5px); /* Ensures the label stays below the planet */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @keyframes orbit {
+            from { transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(0deg); }
+        }
+
+        .orbit {
+            position: absolute;
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Los Planetas del Sistema Solar</h1>
+    <div class="solar-system">
+        <div class="sun"></div>
+    </div>
+    <script>
+        const planets = [
+            { name: 'Mercurio', size: 8, distance: 50, color: 'gray', speed: 3 },
+            { name: 'Venus', size: 14, distance: 80, color: 'goldenrod', speed: 5 },
+            { name: 'Tierra', size: 16, distance: 110, color: 'blue', speed: 7 },
+            { name: 'Marte', size: 12, distance: 150, color: 'red', speed: 9 },
+            { name: 'Jupiter', size: 30, distance: 200, color: 'orange', speed: 11 },
+            { name: 'Saturno', size: 26, distance: 260, color: 'gold', speed: 13 },
+            { name: 'Urano', size: 20, distance: 320, color: 'lightblue', speed: 15 },
+            { name: 'Neptuno', size: 18, distance: 380, color: 'darkblue', speed: 17 }
+        ];
+
+        const solarSystem = document.querySelector('.solar-system');
+
+        planets.forEach(planet => {
+            const orbit = document.createElement('div');
+            orbit.classList.add('orbit');
+            orbit.style.width = `${planet.distance * 2}px`;
+            orbit.style.height = `${planet.distance * 2}px`;
+            orbit.style.left = `calc(50% - ${planet.distance}px)`;
+            orbit.style.top = `calc(50% - ${planet.distance}px)`;
+            solarSystem.appendChild(orbit);
+
+            const planetWrapper = document.createElement('div');
+            planetWrapper.style.position = 'absolute';
+            planetWrapper.style.width = '100%';
+            planetWrapper.style.height = '100%';
+            planetWrapper.style.animation = `orbit ${planet.speed}s linear infinite`;
+            planetWrapper.style.setProperty('--orbit-radius', `${planet.distance}px`);
+            orbit.appendChild(planetWrapper);
+
+            const planetDiv = document.createElement('div');
+            planetDiv.classList.add('planet');
+            planetDiv.style.width = `${planet.size}px`;
+            planetDiv.style.height = `${planet.size}px`;
+            planetDiv.style.backgroundColor = planet.color;
+            planetDiv.style.position = 'absolute';
+            planetDiv.style.top = '50%';
+            planetDiv.style.left = '50%';
+            planetDiv.style.transform = `translate(-50%, -50%)`;
+            planetWrapper.appendChild(planetDiv);
+
+            const planetLabel = document.createElement('div');
+            planetLabel.classList.add('planet-label');
+            planetLabel.innerText = planet.name;
+            planetDiv.appendChild(planetLabel); // Attach label to the planet itself
+        });
+    </script>
+</body>
+</html>

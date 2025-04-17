@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Esperanza de Vida Personalizada</title>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@900&family=Labrada:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #2c3e50;
+            --color-secondary: #3498db;
+            --color-background: #f4f4f9;
+            --color-white: #ffffff;
+            --color-accent: #2980b9;
+        }
+
+        body {
+            font-family: 'Labrada', serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: var(--color-background);
+            line-height: 1.6;
+            color: var(--color-primary);
+        }
+
+        .container {
+            background-color: var(--color-white);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            font-family: 'Alegreya', serif;
+            font-weight: 900;
+            color: var(--color-primary);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            letter-spacing: -1px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 8px;
+            color: var(--color-primary);
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(44, 62, 80, 0.2);
+            border-radius: 8px;
+            font-family: 'Labrada', serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--color-secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--color-secondary);
+            color: var(--color-white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Alegreya', serif;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--color-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        #resultado {
+            margin-top: 30px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--color-primary);
+            background-color: rgba(52, 152, 219, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🕰️ Calculadora de Esperanza de Vida</h1>
+        
+        <label for="edad">Edad actual:</label>
+        <input type="number" id="edad" min="18" max="100" placeholder="Tu edad actual">
+        
+        <label for="genero">Género:</label>
+        <select id="genero">
+            <option value="">Selecciona tu género</option>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+        </select>
+        
+        <label for="ejercicio">Horas de ejercicio semanal:</label>
+        <input type="number" id="ejercicio" min="0" max="20" placeholder="Horas de ejercicio">
+        
+        <label for="dieta">Calidad de dieta:</label>
+        <select id="dieta">
+            <option value="">Selecciona tu dieta</option>
+            <option value="saludable">Muy saludable</option>
+            <option value="regular">Regular</option>
+            <option value="mala">Poco saludable</option>
+        </select>
+        
+        <label for="estres">Nivel de estrés (1-10):</label>
+        <input type="number" id="estres" min="1" max="10" placeholder="Nivel de estrés">
+        
+        <label for="sueno">Horas de sueño diarias:</label>
+        <input type="number" id="sueno" min="4" max="10" placeholder="Horas de sueño">
+        
+        <button onclick="calcularEsperanzaVida()">Calcular Esperanza de Vida</button>
+        
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        function calcularEsperanzaVida() {
+            const edad = parseInt(document.getElementById('edad').value);
+            const genero = document.getElementById('genero').value;
+            const ejercicio = parseInt(document.getElementById('ejercicio').value);
+            const dieta = document.getElementById('dieta').value;
+            const estres = parseInt(document.getElementById('estres').value);
+            const sueno = parseInt(document.getElementById('sueno').value);
+
+            // Validaciones
+            if (!edad || !genero || !dieta || !estres || !sueno) {
+                alert('Por favor, completa todos los campos');
+                return;
+            }
+
+            // Esperanza de vida base por género
+            let esperanzaBase = genero === 'femenino' ? 82 : 76;
+
+            // Modificadores
+            let modificadores = 0;
+
+            // Ejercicio
+            modificadores += ejercicio >= 7 ? 3 : (ejercicio >= 3 ? 1 : -1);
+
+            // Dieta
+            modificadores += dieta === 'saludable' ? 2 : (dieta === 'regular' ? 0 : -2);
+
+            // Estrés
+            modificadores += estres <= 3 ? 2 : (estres <= 6 ? 0 : -2);
+
+            // Sueño
+            modificadores += (sueno >= 7 && sueno <= 9) ? 1 : -1;
+
+            // Calcular esperanza de vida
+            const esperanzaFinal = esperanzaBase + modificadores;
+            const aniosRestantes = Math.max(0, esperanzaFinal - edad);
+
+            // Mensaje personalizado
+            const mensaje = aniosRestantes > 0 
+                ? `Esperanza de vida estimada: ${esperanzaFinal} años
+                   Te quedan aproximadamente ${aniosRestantes.toFixed(1)} años de vida`
+                : 'Por favor, ingresa una edad menor a tu esperanza de vida estimada';
+
+            document.getElementById('resultado').innerHTML = mensaje;
+        }
+    </script>
+</body>
+</html>

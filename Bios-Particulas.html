@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jesús David Silva Rangel - Data Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@900&family=Labrada&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Labrada', serif;
+            background-color: #121212;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Particle background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            top: 0;
+            left: 0;
+        }
+
+        /* Container */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        /* Title */
+        h1 {
+            font-family: 'Alegreya', serif;
+            font-weight: 900;
+            font-size: 3rem;
+            color: #f4a261;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Subtitle */
+        h2 {
+            font-size: 1.5rem;
+            color: #e9c46a;
+            margin-top: 10px;
+        }
+
+        /* Bio Text */
+        p {
+            font-size: 1.1rem;
+            margin-top: 15px;
+            max-width: 600px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        /* Button */
+        .contact-btn {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: none;
+            background-color: #f4a261;
+            color: #121212;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .contact-btn:hover {
+            background-color: #e76f51;
+        }
+
+        button {
+            font-family: 'Labrada', serif;
+        } 
+    </style>
+</head>
+<body>
+
+    <!-- Particle Effect -->
+    <div id="particles-js"></div>
+
+    <!-- Bio Content -->
+    <div class="container">
+        <h1>Jesús David Silva Rangel</h1>
+        <h2>Data Engineer & AI Enthusiast</h2>
+        <p>Apasionado por la ciencia de datos, la inteligencia artificial y el desarrollo de soluciones sólidas y escalables para la industria tecnológica. Me especializo en desarrollo full-stack, aprendizaje automático e ingeniería de datos para los sectores financiero y de atención médica.</p>
+        <button class="contact-btn">Contactame</button>
+    </div>
+
+    <!-- Particle Effect Script -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#ffffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                },
+                modes: {
+                    repulse: { distance: 100, duration: 0.4 },
+                    push: { particles_nb: 4 }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+
+</body>
+</html>
